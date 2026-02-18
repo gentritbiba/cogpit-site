@@ -4,16 +4,13 @@ import {
   Bot,
   GitFork,
   Redo2,
-  Terminal,
-  FileEdit,
-  FileText,
-  Search,
   CheckCircle,
   XCircle,
   X,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
+import { TOOL_STYLES, DEFAULT_TOOL_STYLE } from "../lib/toolStyles";
 
 // ─── Types ────────────────────────────────────────────────────
 
@@ -38,14 +35,6 @@ interface BranchData {
 }
 
 // ─── Constants ────────────────────────────────────────────────
-
-const TOOL_STYLES: Record<string, { bg: string; icon: typeof Terminal }> = {
-  Read: { bg: "bg-blue-500/20 text-blue-400 border-blue-500/30", icon: FileText },
-  Edit: { bg: "bg-amber-500/20 text-amber-400 border-amber-500/30", icon: FileEdit },
-  Write: { bg: "bg-green-500/20 text-green-400 border-green-500/30", icon: FileEdit },
-  Bash: { bg: "bg-red-500/20 text-red-400 border-red-500/30", icon: Terminal },
-  Grep: { bg: "bg-purple-500/20 text-purple-400 border-purple-500/30", icon: Search },
-};
 
 const BRANCH_POINT_IDX = 3;
 const BRANCH_COLORS = ["#3b82f6", "#a855f7", "#f59e0b"];
@@ -370,7 +359,7 @@ function MiniBranchGraph({ activeBranchIdx }: { activeBranchIdx: number }) {
 // ─── Tool Badge ───────────────────────────────────────────────
 
 function ToolBadge({ tool }: { tool: ToolCall }) {
-  const style = TOOL_STYLES[tool.name] || { bg: "bg-zinc-500/20 text-zinc-400 border-zinc-500/30", icon: Terminal };
+  const style = TOOL_STYLES[tool.name] || DEFAULT_TOOL_STYLE;
   const Icon = style.icon;
   return (
     <div className="flex items-center gap-1 min-w-0 shrink overflow-hidden">
@@ -603,13 +592,13 @@ export default function MockBranchView() {
                   </div>
 
                   {turn.toolCalls?.map((tool, j) => {
-                    const s = TOOL_STYLES[tool.name];
+                    const s = TOOL_STYLES[tool.name] || DEFAULT_TOOL_STYLE;
                     return (
                       <div key={j} className="flex items-center gap-3 mt-1.5 ml-0.5">
                         <div className="h-2.5 w-2.5 rounded-full bg-zinc-600 shrink-0" />
                         <span
                           className={`inline-flex items-center rounded border px-1.5 py-0.5 text-[10px] font-mono ${
-                            s?.bg || "bg-zinc-500/20 text-zinc-400 border-zinc-500/30"
+                            s.bg
                           }`}
                         >
                           {tool.name} {shortFile(tool.summary)}

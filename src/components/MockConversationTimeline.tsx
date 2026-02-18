@@ -6,12 +6,10 @@ import {
   ChevronRight,
   Brain,
   CheckCircle,
-  Terminal,
-  FileEdit,
-  FileText,
   Copy,
-  Search,
+  FileEdit,
 } from "lucide-react";
+import { TOOL_STYLES, DEFAULT_TOOL_STYLE } from "../lib/toolStyles";
 
 interface ToolCall {
   name: string;
@@ -27,25 +25,6 @@ interface Turn {
   toolCalls?: ToolCall[];
   diff?: { file: string; removed: string[]; added: string[] };
 }
-
-const TOOL_COLORS: Record<string, string> = {
-  Bash: "bg-red-500/20 text-red-400 border-red-500/30",
-  Edit: "bg-amber-500/20 text-amber-400 border-amber-500/30",
-  Read: "bg-blue-500/20 text-blue-400 border-blue-500/30",
-  Write: "bg-green-500/20 text-green-400 border-green-500/30",
-  Grep: "bg-purple-500/20 text-purple-400 border-purple-500/30",
-  Glob: "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
-  Task: "bg-indigo-500/20 text-indigo-400 border-indigo-500/30",
-};
-
-const TOOL_ICONS: Record<string, typeof Terminal> = {
-  Bash: Terminal,
-  Edit: FileEdit,
-  Read: FileText,
-  Write: FileEdit,
-  Grep: Search,
-  Glob: Search,
-};
 
 const mockConversation: Turn[] = [
   {
@@ -112,8 +91,9 @@ function ToolCallCard({
   defaultExpanded?: boolean;
 }) {
   const [expanded, setExpanded] = useState(defaultExpanded);
-  const colorClass = TOOL_COLORS[tool.name] || "bg-zinc-500/20 text-zinc-400 border-zinc-500/30";
-  const Icon = TOOL_ICONS[tool.name] || Terminal;
+  const style = TOOL_STYLES[tool.name] || DEFAULT_TOOL_STYLE;
+  const colorClass = style.bg;
+  const Icon = style.icon;
 
   return (
     <div className="rounded-lg border border-zinc-800 bg-zinc-900/50 overflow-hidden">
