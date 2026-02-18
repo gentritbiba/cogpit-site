@@ -1,0 +1,318 @@
+---
+/**
+ * CockpitBackground — An SVG cockpit instrument panel built from interlocking gears.
+ *
+ * Gear math: meshing gears share a "module" (= 2×pitchRadius / teeth) so
+ * tooth sizes match at the contact point. Satellites derive their dimensions
+ * from the parent gear's module — outerR, innerR, and center distance are
+ * all computed, not hand-picked, which guarantees the teeth fit together.
+ *
+ * Phase offsets align tooth-to-valley at each contact line.
+ * Speed ratios are inversely proportional to tooth counts.
+ */
+
+/** Generate an involute-profile SVG gear path centered at origin.
+ *
+ *  Each tooth has:
+ *    - Curved flanks (cubic bézier mimicking an involute curve)
+ *    - Rounded tip (arc along the addendum circle)
+ *    - Smooth root fillet (arc along the dedendum circle)
+ *
+ *  `mod` sets absolute tooth width so meshing gears interlock.
+ *  When mod=0, falls back to proportional sizing (decorative gears). */
+function cogPath(teeth: number, outerR: number, innerR: number, mod: number): string {
+  const step = (Math.PI * 2) / teeth;
+  const tipHalf = mod > 0 ? (mod * 0.5) / outerR : step * 0.15;
+  const valleyHalf = mod > 0 ? (mod * 0.7) / innerR : step * 0.15;
+  const toothH = outerR - innerR;
+
+  // Control-point radii for the involute-like bézier flanks:
+  // rLow sits ~55 % up the tooth → curve hugs the root then sweeps outward
+  // rHigh sits ~90 % up the tooth → curve arrives tangentially at the tip
+  const rLow = innerR + toothH * 0.55;
+  const rHigh = outerR - toothH * 0.1;
+
+  const px = (r: number, a: number) => (Math.cos(a) * r).toFixed(2);
+  const py = (r: number, a: number) => (Math.sin(a) * r).toFixed(2);
+
+  let d = "";
+
+  for (let i = 0; i < teeth; i++) {
+    const a = i * step;          // tooth-tip center
+    const mid = a + step / 2;    // valley center
+
+    const baseL = a - step / 2 + valleyHalf;   // left root of tooth
+    const tipL  = a - tipHalf;                  // left edge of tip
+    const tipR  = a + tipHalf;                  // right edge of tip
+    const baseR = mid - valleyHalf;             // right root of tooth
+    const valR  = mid + valleyHalf;             // → next tooth's baseL
+
+    if (i === 0) d = `M${px(innerR, baseL)},${py(innerR, baseL)}`;
+
+    // ── Left flank: involute rise from root to tip ──
+    d += `C${px(rLow, baseL)},${py(rLow, baseL)} `
+       + `${px(rHigh, tipL)},${py(rHigh, tipL)} `
+       + `${px(outerR, tipL)},${py(outerR, tipL)}`;
+
+    // ── Rounded tip: bézier bulge beyond addendum circle ──
+    const tipMid = (tipL + tipR) / 2;  // = a (center of tooth)
+    const tipBulge = outerR + toothH * 0.08;
+    d += `Q${px(tipBulge, tipMid)},${py(tipBulge, tipMid)} `
+       + `${px(outerR, tipR)},${py(outerR, tipR)}`;
+
+    // ── Right flank: involute descent from tip to root ──
+    d += `C${px(rHigh, tipR)},${py(rHigh, tipR)} `
+       + `${px(rLow, baseR)},${py(rLow, baseR)} `
+       + `${px(innerR, baseR)},${py(innerR, baseR)}`;
+
+    // ── Root fillet: concave bézier scoop inside dedendum circle ──
+    const valMid = (baseR + valR) / 2;  // = mid (center of valley)
+    const valDip = innerR - toothH * 0.25;
+    d += `Q${px(valDip, valMid)},${py(valDip, valMid)} `
+       + `${px(innerR, valR)},${py(innerR, valR)}`;
+  }
+
+  return d + "Z";
+}
+
+/** Compute initial rotation so child's valleys align with parent's teeth. */
+function meshPhase(
+  parent: { cx: number; cy: number; teeth: number; phase: number },
+  child:  { cx: number; cy: number; teeth: number },
+): number {
+  const DEG = 180 / Math.PI;
+  const contactDeg = Math.atan2(child.cy - parent.cy, child.cx - parent.cx) * DEG;
+  const childContact = contactDeg + 180;
+  const pStep = 360 / parent.teeth;
+  const cStep = 360 / child.teeth;
+  const raw = childContact - cStep * (0.5 - (contactDeg - parent.phase) / pStep);
+  return ((raw % cStep) + cStep) % cStep;
+}
+
+interface Gear {
+  cx: number; cy: number; teeth: number;
+  outerR: number; innerR: number; holeR: number;
+  speed: number; dir: 1 | -1;
+  opacity: number; stroke: number;
+  phase: number; module: number;
+  spokes?: number;
+}
+
+/** Create a satellite gear that meshes perfectly with its parent.
+ *  Dimensions, position, speed, and phase are all derived from the parent's module. */
+function sat(
+  parent: Gear, teeth: number, angle: number,
+  dir: 1 | -1, opacity: number, stroke: number, holeR?: number,
+): Gear {
+  const mod = parent.module;
+  const parentPitch = mod * parent.teeth / 2;
+  const childPitch = mod * teeth / 2;
+  const add = parent.outerR - parentPitch;   // addendum (same for cluster)
+  const ded = parentPitch - parent.innerR;   // dedendum (same for cluster)
+  const dist = parentPitch + childPitch;     // exact pitch-circle distance
+  const cx = parent.cx + Math.cos(angle) * dist;
+  const cy = parent.cy + Math.sin(angle) * dist;
+  return {
+    cx, cy, teeth,
+    outerR: childPitch + add,
+    innerR: childPitch - ded,
+    holeR: holeR ?? Math.max(childPitch * 0.32, 8),
+    speed: parent.speed * teeth / parent.teeth,
+    dir, opacity, stroke,
+    phase: meshPhase(parent, { cx, cy, teeth }),
+    module: mod,
+  };
+}
+
+// ─── Central cluster (700, 260) ──────────────────────────────
+const cMain: Gear = {
+  cx: 700, cy: 260, teeth: 20, outerR: 95, innerR: 78, holeR: 32,
+  speed: 50, dir: 1, opacity: 1, stroke: 1.2, phase: 0,
+  module: (95 + 78) / 20, // = 8.65
+  spokes: 6,
+};
+const cSats = Array.from({ length: 6 }, (_, i) =>
+  sat(cMain, 10, i * Math.PI / 3 - Math.PI / 2, -1, 0.9, 0.8)
+);
+
+// ─── Left gauge (240, 290) ───────────────────────────────────
+const lMain: Gear = {
+  cx: 240, cy: 290, teeth: 14, outerR: 65, innerR: 52, holeR: 22,
+  speed: 42, dir: -1, opacity: 1, stroke: 1, phase: 0,
+  module: (65 + 52) / 14, // ≈ 8.36
+  spokes: 4,
+};
+const lSat1 = sat(lMain, 8, Math.atan2(-20, -91), 1, 0.85, 0.8, 10);
+const lSat2 = sat(lMain, 7, Math.atan2(86, 20),   1, 0.8,  0.8, 9);
+
+// ─── Right gauge (1160, 290) ─────────────────────────────────
+const rMain: Gear = {
+  cx: 1160, cy: 290, teeth: 14, outerR: 65, innerR: 52, holeR: 22,
+  speed: 42, dir: 1, opacity: 1, stroke: 1, phase: 0,
+  module: (65 + 52) / 14,
+  spokes: 4,
+};
+const rSat1 = sat(rMain, 8, Math.atan2(-20, 95),  -1, 0.85, 0.8, 10);
+const rSat2 = sat(rMain, 7, Math.atan2(86, -20),  -1, 0.8,  0.8, 9);
+
+// ─── Bottom dashboard gears (decorative, not meshed) ─────────
+const bottomGears: Gear[] = [];
+const bPositions = [120, 220, 340, 480, 580, 700, 820, 920, 1060, 1180, 1280];
+bPositions.forEach((x, i) => {
+  const r = 14 + (i % 3) * 5;
+  bottomGears.push({
+    cx: x, cy: 500 + (i % 2 === 0 ? 0 : 8),
+    teeth: 6 + (i % 4), outerR: r, innerR: r * 0.75, holeR: r * 0.3,
+    speed: 15 + i * 2, dir: i % 2 === 0 ? 1 : -1 as 1 | -1,
+    opacity: 0.65 + (i % 3) * 0.1, stroke: 0.6,
+    phase: 0, module: 0,
+  });
+});
+
+const allGears: Gear[] = [
+  cMain, ...cSats,
+  lMain, lSat1, lSat2,
+  rMain, rSat1, rSat2,
+  ...bottomGears,
+];
+
+const gearRender = allGears.map(g => ({
+  ...g,
+  path: cogPath(g.teeth, g.outerR, g.innerR, g.module),
+}));
+---
+
+<svg
+  class="absolute inset-0 w-full h-full pointer-events-none"
+  viewBox="0 0 1400 600"
+  preserveAspectRatio="xMidYMid slice"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <!-- ═══ COCKPIT FRAME ═══ -->
+  <!-- Windshield arc -->
+  <path
+    d="M 0 0 Q 700 120, 1400 0 L 1400 50 Q 700 160, 0 50 Z"
+    fill="rgba(255,255,255,0.035)"
+    stroke="rgba(255,255,255,0.1)"
+    stroke-width="1"
+  />
+  <!-- Side pillars -->
+  <line x1="80" y1="60" x2="50" y2="550" stroke="rgba(255,255,255,0.08)" stroke-width="2" />
+  <line x1="1320" y1="60" x2="1350" y2="550" stroke="rgba(255,255,255,0.08)" stroke-width="2" />
+  <!-- Dashboard bottom panel -->
+  <path
+    d="M 50 470 Q 700 440, 1350 470 L 1350 560 Q 700 530, 50 560 Z"
+    fill="rgba(255,255,255,0.025)"
+    stroke="rgba(255,255,255,0.08)"
+    stroke-width="1"
+  />
+  <!-- Cross struts -->
+  <line x1="80" y1="180" x2="1320" y2="180" stroke="rgba(255,255,255,0.04)" stroke-width="0.5" />
+  <line x1="60" y1="440" x2="1340" y2="440" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" />
+
+  <!-- ═══ GAUGE TICK MARKS ═══ -->
+  <!-- Central gauge ticks -->
+  {Array.from({ length: 24 }).map((_, i) => {
+    const a = (i * Math.PI * 2) / 24;
+    const r1 = 148;
+    const r2 = i % 3 === 0 ? 140 : 144;
+    return (
+      <line
+        x1={(700 + Math.cos(a) * r1).toFixed(1)}
+        y1={(260 + Math.sin(a) * r1).toFixed(1)}
+        x2={(700 + Math.cos(a) * r2).toFixed(1)}
+        y2={(260 + Math.sin(a) * r2).toFixed(1)}
+        stroke={i % 3 === 0 ? "rgba(139,92,246,0.25)" : "rgba(255,255,255,0.08)"}
+        stroke-width={i % 3 === 0 ? "1.5" : "0.8"}
+      />
+    );
+  })}
+
+  <!-- Left gauge ticks -->
+  {Array.from({ length: 16 }).map((_, i) => {
+    const a = (i * Math.PI * 2) / 16;
+    const r1 = 92;
+    const r2 = i % 4 === 0 ? 85 : 89;
+    return (
+      <line
+        x1={(240 + Math.cos(a) * r1).toFixed(1)}
+        y1={(290 + Math.sin(a) * r1).toFixed(1)}
+        x2={(240 + Math.cos(a) * r2).toFixed(1)}
+        y2={(290 + Math.sin(a) * r2).toFixed(1)}
+        stroke={i % 4 === 0 ? "rgba(59,130,246,0.2)" : "rgba(255,255,255,0.06)"}
+        stroke-width={i % 4 === 0 ? "1.2" : "0.6"}
+      />
+    );
+  })}
+
+  <!-- Right gauge ticks -->
+  {Array.from({ length: 16 }).map((_, i) => {
+    const a = (i * Math.PI * 2) / 16;
+    const r1 = 92;
+    const r2 = i % 4 === 0 ? 85 : 89;
+    return (
+      <line
+        x1={(1160 + Math.cos(a) * r1).toFixed(1)}
+        y1={(290 + Math.sin(a) * r1).toFixed(1)}
+        x2={(1160 + Math.cos(a) * r2).toFixed(1)}
+        y2={(290 + Math.sin(a) * r2).toFixed(1)}
+        stroke={i % 4 === 0 ? "rgba(59,130,246,0.2)" : "rgba(255,255,255,0.06)"}
+        stroke-width={i % 4 === 0 ? "1.2" : "0.6"}
+      />
+    );
+  })}
+
+  <!-- ═══ GEARS ═══ -->
+  {gearRender.map((g) => (
+    <g
+      class="cog-spin"
+      style={`transform-origin:${g.cx}px ${g.cy}px;--cog-duration:${g.speed}s;--cog-dir:${g.dir === 1 ? "normal" : "reverse"};opacity:${g.opacity}`}
+    >
+      {/* Gear teeth — phase offset aligns teeth at mesh contact point */}
+      <path
+        d={g.path}
+        transform={`translate(${g.cx},${g.cy}) rotate(${g.phase.toFixed(2)})`}
+        fill="rgba(255,255,255,0.045)"
+        stroke="rgba(255,255,255,0.12)"
+        stroke-width={g.stroke}
+        stroke-linejoin="round"
+      />
+      {/* Spokes — offset by phase to stay aligned with teeth */}
+      {g.spokes && Array.from({ length: g.spokes }).map((_, si) => {
+        const phaseRad = g.phase * Math.PI / 180;
+        const sa = (si * Math.PI * 2) / g.spokes! + phaseRad;
+        return (
+          <line
+            x1={(g.cx + Math.cos(sa) * g.holeR * 1.2).toFixed(1)}
+            y1={(g.cy + Math.sin(sa) * g.holeR * 1.2).toFixed(1)}
+            x2={(g.cx + Math.cos(sa) * g.innerR * 0.85).toFixed(1)}
+            y2={(g.cy + Math.sin(sa) * g.innerR * 0.85).toFixed(1)}
+            stroke="rgba(255,255,255,0.08)"
+            stroke-width="2"
+          />
+        );
+      })}
+      {/* Center hole */}
+      <circle
+        cx={g.cx} cy={g.cy} r={g.holeR}
+        fill="#09090b"
+        stroke="rgba(255,255,255,0.14)"
+        stroke-width={g.stroke}
+      />
+      {/* Center pin */}
+      <circle cx={g.cx} cy={g.cy} r={Math.max(2, g.holeR * 0.15)} fill="rgba(255,255,255,0.15)" />
+    </g>
+  ))}
+
+  <!-- ═══ ACCENT DETAILS ═══ -->
+
+  <!-- Small indicator dots along bottom panel -->
+  {[150, 350, 550, 700, 850, 1050, 1250].map((x, i) => (
+    <circle
+      cx={x}
+      cy={478 + (i % 2) * 5}
+      r="2.5"
+      fill={i === 3 ? "rgba(139,92,246,0.3)" : "rgba(255,255,255,0.1)"}
+    />
+  ))}
+</svg>

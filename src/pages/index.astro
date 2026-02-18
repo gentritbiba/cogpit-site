@@ -1,0 +1,359 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import HeroSection from "../components/HeroSection.astro";
+import MockConversationTimeline from "../components/MockConversationTimeline";
+
+import MockTeamsDashboard from "../components/MockTeamsDashboard";
+import MockBranchView from "../components/MockBranchView";
+import CopyButton from "../components/CopyButton";
+---
+
+<BaseLayout>
+  <HeroSection>
+    <h1 class="mb-6 text-4xl font-bold tracking-tight sm:text-5xl">Cogpit</h1>
+    <p class="text-xl font-medium text-zinc-200 sm:text-2xl">
+      See inside your Claude Code sessions
+    </p>
+    <p class="mx-auto mt-4 max-w-2xl text-base text-zinc-400 leading-relaxed">
+      An open-source dashboard for observing, understanding, and controlling Claude Code agent sessions in real-time. Watch what your agents do, track costs, manage teams, and take control when needed.
+    </p>
+    <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+      <a
+        href="https://github.com/gentritbiba/cogpit"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-2 rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-zinc-900 transition-colors hover:bg-zinc-200"
+      >
+        <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path>
+        </svg>
+        Get Started
+      </a>
+      <a
+        href="#demo"
+        class="inline-flex items-center gap-2 rounded-lg border border-zinc-700 bg-zinc-900 px-5 py-2.5 text-sm font-medium text-zinc-200 transition-colors hover:bg-zinc-800"
+      >
+        See it in action
+        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+        </svg>
+      </a>
+    </div>
+  </HeroSection>
+
+  <!-- ═══ WHAT IS COGPIT ═══ -->
+  <section class="border-t border-zinc-800/50">
+    <div class="mx-auto max-w-6xl px-6 py-20">
+      <div class="mx-auto max-w-2xl text-center">
+        <h2 class="text-2xl font-bold tracking-tight sm:text-3xl">What is Cogpit?</h2>
+        <p class="mt-4 text-base text-zinc-400 leading-relaxed">
+          Claude Code is powerful but opaque — agents run commands, edit files, and make decisions behind a terminal. Cogpit gives you a window into every session with real-time streaming, detailed analytics, and interactive controls.
+        </p>
+      </div>
+      <div class="mt-12 grid gap-6 sm:grid-cols-3">
+        <div class="rounded-xl border border-zinc-800 bg-zinc-900/30 p-6 transition-colors hover:border-zinc-700">
+          <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-blue-500/10">
+            <svg class="h-5 w-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold">Observe</h3>
+          <p class="mt-2 text-sm text-zinc-400 leading-relaxed">
+            Watch agent sessions in real-time with live SSE streaming. See every tool call, edit, and decision as it happens.
+          </p>
+        </div>
+        <div class="rounded-xl border border-zinc-800 bg-zinc-900/30 p-6 transition-colors hover:border-zinc-700">
+          <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-green-500/10">
+            <svg class="h-5 w-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold">Understand</h3>
+          <p class="mt-2 text-sm text-zinc-400 leading-relaxed">
+            Real-time context window usage, token analytics, per-turn cost tracking, and detailed tool call inspection.
+          </p>
+        </div>
+        <div class="rounded-xl border border-zinc-800 bg-zinc-900/30 p-6 transition-colors hover:border-zinc-700">
+          <div class="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-purple-500/10">
+            <svg class="h-5 w-5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold">Control</h3>
+          <p class="mt-2 text-sm text-zinc-400 leading-relaxed">
+            Conversation branching, permissions management, chat with sessions, and manage multi-agent teams.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CONVERSATION TIMELINE DEMO ═══ -->
+  <section id="demo" class="border-t border-zinc-800/50">
+    <div class="mx-auto max-w-4xl px-6 py-20">
+      <div class="text-center mb-10">
+        <h2 class="text-2xl font-bold tracking-tight sm:text-3xl">Conversation Timeline</h2>
+        <p class="mt-3 text-base text-zinc-400">
+          See every turn, tool call, edit diff, and agent thought — all in one interactive view. Click to expand.
+        </p>
+      </div>
+      <div class="mb-4 flex items-center gap-2 rounded-lg border border-blue-500/20 bg-blue-500/5 px-3.5 py-2.5 text-xs text-blue-300/80">
+        <span class="h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse shrink-0"></span>
+        Components marked <strong class="text-blue-400">Interactive</strong> are live demos — click, expand, and explore them right here on this page.
+      </div>
+      <div class="relative rounded-2xl border border-zinc-800 bg-zinc-950/50 p-4 sm:p-6">
+        <span class="absolute -top-3 right-4 z-10 inline-flex items-center gap-1 rounded-full border border-blue-500/30 bg-blue-500/10 px-2.5 py-0.5 text-[10px] font-medium text-blue-400 backdrop-blur-sm">
+          <span class="h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse"></span>
+          Interactive
+        </span>
+        <MockConversationTimeline client:load />
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FEATURE GRID ═══ -->
+  <section id="features" class="border-t border-zinc-800/50">
+    <div class="mx-auto max-w-6xl px-6 py-20">
+      <div class="text-center mb-12">
+        <h2 class="text-2xl font-bold tracking-tight sm:text-3xl">Features</h2>
+        <p class="mt-3 text-base text-zinc-400">
+          Everything you need to monitor and manage Claude Code sessions.
+        </p>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="rounded-xl border border-zinc-800 bg-zinc-900/30 p-5 transition-colors hover:border-zinc-700">
+          <div class="mb-3 flex h-9 w-9 items-center justify-center rounded-lg text-yellow-400 bg-yellow-500/10">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+          </div>
+          <h3 class="text-sm font-semibold">Live Streaming</h3>
+          <p class="mt-1.5 text-xs text-zinc-400 leading-relaxed">SSE-powered real-time session updates. Watch every agent action as it happens, with auto-scrolling and live indicators.</p>
+        </div>
+        <div class="rounded-xl border border-zinc-800 bg-zinc-900/30 p-5 transition-colors hover:border-zinc-700">
+          <div class="mb-3 flex h-9 w-9 items-center justify-center rounded-lg text-green-400 bg-green-500/10">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path>
+            </svg>
+          </div>
+          <h3 class="text-sm font-semibold">Context Window</h3>
+          <p class="mt-1.5 text-xs text-zinc-400 leading-relaxed">Real-time context usage tracking. See how much of the context window is consumed and how it grows across turns.</p>
+        </div>
+        <div class="rounded-xl border border-zinc-800 bg-zinc-900/30 p-5 transition-colors hover:border-zinc-700">
+          <div class="mb-3 flex h-9 w-9 items-center justify-center rounded-lg text-blue-400 bg-blue-500/10">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+            </svg>
+          </div>
+          <h3 class="text-sm font-semibold">Token Analytics</h3>
+          <p class="mt-1.5 text-xs text-zinc-400 leading-relaxed">Per-turn cost tracking with SVG charts. Input, output, and cache tokens broken down by turn with estimated cost.</p>
+        </div>
+        <div class="rounded-xl border border-zinc-800 bg-zinc-900/30 p-5 transition-colors hover:border-zinc-700">
+          <div class="mb-3 flex h-9 w-9 items-center justify-center rounded-lg text-amber-400 bg-amber-500/10">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path>
+            </svg>
+          </div>
+          <h3 class="text-sm font-semibold">Tool Call Inspector</h3>
+          <p class="mt-1.5 text-xs text-zinc-400 leading-relaxed">Drill into every tool call with full input, output, and status. Inspect Read, Edit, Bash, Grep, and more with syntax-highlighted diffs.</p>
+        </div>
+        <div class="rounded-xl border border-zinc-800 bg-zinc-900/30 p-5 transition-colors hover:border-zinc-700">
+          <div class="mb-3 flex h-9 w-9 items-center justify-center rounded-lg text-cyan-400 bg-cyan-500/10">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+            </svg>
+          </div>
+          <h3 class="text-sm font-semibold">Parallel Sessions</h3>
+          <p class="mt-1.5 text-xs text-zinc-400 leading-relaxed">Run and monitor multiple agent sessions side by side. Switch between sessions instantly and track progress across all of them.</p>
+        </div>
+        <div class="rounded-xl border border-zinc-800 bg-zinc-900/30 p-5 transition-colors hover:border-zinc-700">
+          <div class="mb-3 flex h-9 w-9 items-center justify-center rounded-lg text-indigo-400 bg-indigo-500/10">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            </svg>
+          </div>
+          <h3 class="text-sm font-semibold">Sub-Agent Tracking</h3>
+          <p class="mt-1.5 text-xs text-zinc-400 leading-relaxed">See nested agent spawns and their work. Track teams, task assignments, and inter-agent messages in real-time.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ AGENT TEAMS ═══ -->
+  <section class="border-t border-zinc-800/50">
+    <div class="mx-auto max-w-4xl px-6 py-20">
+      <div class="flex flex-col items-center text-center mb-10 sm:flex-row sm:items-end sm:justify-between sm:text-left">
+        <div>
+          <h2 class="text-2xl font-bold tracking-tight sm:text-3xl">Agent Teams</h2>
+          <p class="mt-3 text-base text-zinc-400 max-w-lg">
+            Monitor multi-agent teams collaborating on complex tasks. See members, task boards, and real-time messages.
+          </p>
+        </div>
+        <a
+          href="/teams"
+          class="mt-4 inline-flex items-center gap-1.5 text-sm text-blue-400 hover:text-blue-300 transition-colors sm:mt-0 shrink-0"
+        >
+          Deep dive
+          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </a>
+      </div>
+      <div class="relative">
+        <span class="absolute -top-3 right-4 z-10 inline-flex items-center gap-1 rounded-full border border-blue-500/30 bg-blue-500/10 px-2.5 py-0.5 text-[10px] font-medium text-blue-400 backdrop-blur-sm">
+          <span class="h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse"></span>
+          Interactive
+        </span>
+        <MockTeamsDashboard client:load />
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ BRANCHING ═══ -->
+  <section class="border-t border-zinc-800/50">
+    <div class="mx-auto max-w-5xl px-6 py-20">
+      <div class="flex flex-col items-center text-center mb-10 sm:flex-row sm:items-end sm:justify-between sm:text-left">
+        <div>
+          <h2 class="text-2xl font-bold tracking-tight sm:text-3xl">Conversation Branching</h2>
+          <p class="mt-3 text-base text-zinc-400 max-w-lg">
+            Take back agent actions and explore alternative approaches with conversation branching.
+          </p>
+        </div>
+        <a
+          href="/branching"
+          class="mt-4 inline-flex items-center gap-1.5 text-sm text-blue-400 hover:text-blue-300 transition-colors sm:mt-0 shrink-0"
+        >
+          Deep dive
+          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </a>
+      </div>
+      <div class="relative rounded-2xl border border-zinc-800 bg-zinc-950/50 p-4 sm:p-6">
+        <span class="absolute -top-3 right-4 z-10 inline-flex items-center gap-1 rounded-full border border-blue-500/30 bg-blue-500/10 px-2.5 py-0.5 text-[10px] font-medium text-blue-400 backdrop-blur-sm">
+          <span class="h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse"></span>
+          Interactive
+        </span>
+        <MockBranchView client:load />
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ GETTING STARTED ═══ -->
+  <section id="get-started" class="border-t border-zinc-800/50">
+    <div class="mx-auto max-w-3xl px-6 py-20">
+      <div class="text-center mb-10">
+        <h2 class="text-2xl font-bold tracking-tight sm:text-3xl">Get Started</h2>
+        <p class="mt-3 text-base text-zinc-400">
+          Download the desktop app or run from source — up and running in under a minute.
+        </p>
+      </div>
+
+      <!-- Option 1: Download -->
+      <div class="rounded-xl border border-zinc-800 bg-zinc-900/30 p-6 mb-6">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500/10">
+            <svg class="h-4 w-4 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-sm font-semibold">Desktop App</h3>
+            <p class="text-xs text-zinc-500">Recommended — no setup required</p>
+          </div>
+        </div>
+        <div class="grid gap-2 sm:grid-cols-2 mb-4">
+          <a
+            href="https://github.com/gentritbiba/cogpit/releases"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center gap-2.5 rounded-lg border border-zinc-700 bg-zinc-800/50 px-4 py-3 text-sm text-zinc-200 hover:border-zinc-600 hover:bg-zinc-800 transition-colors"
+          >
+            <svg class="h-4 w-4 text-zinc-400 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>
+            <div>
+              <div>macOS</div>
+              <div class="text-[10px] text-zinc-500">.dmg (Apple Silicon & Intel)</div>
+            </div>
+          </a>
+          <a
+            href="https://github.com/gentritbiba/cogpit/releases"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center gap-2.5 rounded-lg border border-zinc-700 bg-zinc-800/50 px-4 py-3 text-sm text-zinc-200 hover:border-zinc-600 hover:bg-zinc-800 transition-colors"
+          >
+            <svg class="h-4 w-4 text-zinc-400 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
+            <div>
+              <div>Windows</div>
+              <div class="text-[10px] text-zinc-500">.exe installer</div>
+            </div>
+          </a>
+          <a
+            href="https://github.com/gentritbiba/cogpit/releases"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center gap-2.5 rounded-lg border border-zinc-700 bg-zinc-800/50 px-4 py-3 text-sm text-zinc-200 hover:border-zinc-600 hover:bg-zinc-800 transition-colors"
+          >
+            <svg class="h-4 w-4 text-zinc-400 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M17.61.455a3.41 3.41 0 0 0-3.41 3.41 3.41 3.41 0 0 0 3.41 3.41 3.41 3.41 0 0 0 3.41-3.41 3.41 3.41 0 0 0-3.41-3.41zM12.92.8C8.923.777 5.137 2.941 3.148 6.451a4.5 4.5 0 0 1 .26-.007 4.92 4.92 0 0 1 2.585.737A8.316 8.316 0 0 1 12.688 3.6 4.944 4.944 0 0 1 13.723.834 11.008 11.008 0 0 0 12.92.8zm9.226 4.994a4.915 4.915 0 0 1-1.918 2.246 8.36 8.36 0 0 1-.273 8.303 4.89 4.89 0 0 1 1.632 2.54 11.156 11.156 0 0 0 .559-13.089zM3.41 7.932A3.41 3.41 0 0 0 0 11.342a3.41 3.41 0 0 0 3.41 3.409 3.41 3.41 0 0 0 3.41-3.41 3.41 3.41 0 0 0-3.41-3.41zm2.027 7.866a4.908 4.908 0 0 1-2.915.358 11.1 11.1 0 0 0 7.991 6.698 11.234 11.234 0 0 0 2.422.249 4.879 4.879 0 0 1-.999-2.85 8.484 8.484 0 0 1-.836-.136 8.304 8.304 0 0 1-5.663-4.32zm11.405.928a3.41 3.41 0 0 0-3.41 3.41 3.41 3.41 0 0 0 3.41 3.41 3.41 3.41 0 0 0 3.41-3.41 3.41 3.41 0 0 0-3.41-3.41z"/></svg>
+            <div>
+              <div>Linux <span class="text-zinc-500">/</span> Ubuntu</div>
+              <div class="text-[10px] text-zinc-500">.deb & .AppImage</div>
+            </div>
+          </a>
+          <a
+            href="https://github.com/gentritbiba/cogpit/releases"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center gap-2.5 rounded-lg border border-zinc-700 bg-zinc-800/50 px-4 py-3 text-sm text-zinc-200 hover:border-zinc-600 hover:bg-zinc-800 transition-colors"
+          >
+            <svg class="h-4 w-4 text-zinc-400 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M11.39.605C10.376 3.092 9.764 4.72 8.635 7.132c.693.734 1.543 1.589 2.923 2.554-1.484-.61-2.496-1.224-3.252-1.86C6.86 10.842 4.596 15.138 0 23.395c3.612-2.085 6.412-3.37 9.021-3.862a6.61 6.61 0 01-.171-1.547l.003-.115c.058-2.315 1.261-4.095 2.687-3.973 1.426.12 2.534 2.096 2.478 4.409a6.52 6.52 0 01-.146 1.243c2.58.505 5.352 1.787 8.914 3.844-.702-1.293-1.33-2.459-1.929-3.57-.943-.73-1.926-1.682-3.933-2.713 1.38.359 2.367.772 3.137 1.234-6.09-11.334-6.582-12.84-8.67-17.74z"/></svg>
+            <div>
+              <div>Linux <span class="text-zinc-500">/</span> Arch</div>
+              <div class="text-[10px] text-zinc-500">.pacman</div>
+            </div>
+          </a>
+        </div>
+        <p class="text-xs text-zinc-500">
+          All packages available on the <a href="https://github.com/gentritbiba/cogpit/releases" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:text-blue-300">Releases page</a>.
+        </p>
+      </div>
+
+      <!-- Option 2: From Source -->
+      <div class="rounded-xl border border-zinc-800 bg-zinc-900/30 p-6">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-green-500/10">
+            <svg class="h-4 w-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-sm font-semibold">From Source</h3>
+            <p class="text-xs text-zinc-500">Requires Bun + Claude Code</p>
+          </div>
+        </div>
+        <div class="relative rounded-xl border border-zinc-800 bg-zinc-950/80 overflow-hidden">
+          <div class="flex items-center gap-1.5 border-b border-zinc-800 px-4 py-2.5">
+            <div class="h-2.5 w-2.5 rounded-full bg-red-500/60"></div>
+            <div class="h-2.5 w-2.5 rounded-full bg-yellow-500/60"></div>
+            <div class="h-2.5 w-2.5 rounded-full bg-green-500/60"></div>
+            <span class="ml-2 text-xs text-zinc-500">Terminal</span>
+          </div>
+          <div class="p-4 font-mono text-sm leading-relaxed">
+            <div><span class="text-green-400">$</span> <span class="text-zinc-300">git clone https://github.com/gentritbiba/cogpit</span></div>
+            <div><span class="text-green-400">$</span> <span class="text-zinc-300">cd cogpit</span></div>
+            <div><span class="text-green-400">$</span> <span class="text-zinc-300">bun install</span></div>
+            <div><span class="text-green-400">$</span> <span class="text-zinc-300">bun run dev</span></div>
+          </div>
+          <CopyButton
+            client:load
+            text={"git clone https://github.com/gentritbiba/cogpit\ncd cogpit\nbun install\nbun run dev"}
+          />
+        </div>
+        <p class="mt-4 text-xs text-zinc-500">
+          See the <a href="https://github.com/gentritbiba/cogpit#readme" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:text-blue-300">README</a> for Electron builds, configuration, and advanced setup.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,193 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import HeroSection from "../components/HeroSection.astro";
+import MockBranchView from "../components/MockBranchView";
+---
+
+<BaseLayout title="Conversation Branching — Cogpit" description="Explore alternative approaches with conversation branching — nothing is ever lost.">
+  <HeroSection backLink>
+    <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">Conversation Branching</h1>
+    <p class="mt-4 max-w-2xl text-base text-zinc-400 leading-relaxed">
+      Agents sometimes take the wrong path. Cogpit lets you explore alternative approaches and switch between branches — all without losing a single line of work.
+    </p>
+  </HeroSection>
+
+  <!-- Interactive Demo (hero section for this page) -->
+  <section class="border-t border-zinc-800/50">
+    <div class="mx-auto max-w-5xl px-6 py-16">
+      <div class="mb-8">
+        <h2 class="text-xl font-bold">Try it yourself</h2>
+        <p class="mt-2 text-sm text-zinc-400">
+          Open the <strong class="text-purple-400">branches</strong> modal to navigate between alternative approaches — OAuth, magic links, and WebAuthn passkeys — and switch the active branch.
+        </p>
+      </div>
+      <div class="mb-4 flex items-center gap-2 rounded-lg border border-blue-500/20 bg-blue-500/5 px-3.5 py-2.5 text-xs text-blue-300/80">
+        <span class="h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse shrink-0"></span>
+        Components marked <strong class="text-blue-400">Interactive</strong> are live demos — click, expand, and explore them right here on this page.
+      </div>
+      <div class="relative rounded-2xl border border-zinc-800 bg-zinc-950/50 p-4 sm:p-6">
+        <span class="absolute -top-3 right-4 z-10 inline-flex items-center gap-1 rounded-full border border-blue-500/30 bg-blue-500/10 px-2.5 py-0.5 text-[10px] font-medium text-blue-400 backdrop-blur-sm">
+          <span class="h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse"></span>
+          Interactive
+        </span>
+        <MockBranchView client:load />
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works — visual explanation -->
+  <section class="border-t border-zinc-800/50">
+    <div class="mx-auto max-w-4xl px-6 py-16">
+      <h2 class="text-xl font-bold mb-10">How it works</h2>
+
+      <div class="space-y-12">
+        <!-- Step 1 -->
+        <div class="flex gap-6 items-start">
+          <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-500/10 border border-blue-500/20">
+            <span class="text-sm font-bold text-blue-400">1</span>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold mb-2">Agent makes tool calls</h3>
+            <p class="text-sm text-zinc-400 leading-relaxed mb-3">
+              Each turn is recorded as a node in the conversation graph. Tool calls like
+              <span class="inline-flex items-center mx-1 rounded border border-amber-500/30 bg-amber-500/20 px-1.5 py-0.5 text-[10px] text-amber-400 font-medium">Edit</span>
+              <span class="inline-flex items-center mx-1 rounded border border-green-500/30 bg-green-500/20 px-1.5 py-0.5 text-[10px] text-green-400 font-medium">Write</span>
+              <span class="inline-flex items-center mx-1 rounded border border-red-500/30 bg-red-500/20 px-1.5 py-0.5 text-[10px] text-red-400 font-medium">Bash</span>
+              are tracked with their full input/output and success status.
+            </p>
+            <div class="rounded-lg border border-zinc-800 bg-zinc-900/50 p-3">
+              <svg width="100%" height="40" viewBox="0 0 400 40">
+                <line x1="20" y1="20" x2="380" y2="20" stroke="#3b82f6" stroke-width="2" />
+                {[20, 110, 200, 290, 380].map((x, i) => (
+                  <g>
+                    <circle cx={x.toString()} cy="20" r="6" fill="#09090b" stroke={i % 2 === 0 ? "#3b82f6" : "#22c55e"} stroke-width="2" />
+                    <circle cx={x.toString()} cy="20" r="2.5" fill={i % 2 === 0 ? "#60a5fa" : "#4ade80"} />
+                    <text x={x.toString()} y="36" text-anchor="middle" fill="#52525b" font-size="8" font-family="monospace">T{i + 1}</text>
+                  </g>
+                ))}
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="flex gap-6 items-start">
+          <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-500/10 border border-amber-500/20">
+            <span class="text-sm font-bold text-amber-400">2</span>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold mb-2">Undo rewinds turns</h3>
+            <p class="text-sm text-zinc-400 leading-relaxed mb-3">
+              Each undo dims the most recent turn. The turn isn't deleted — it's marked as "undone" and can be restored with redo. The graph visually shows undone turns as dashed connections with faded nodes.
+            </p>
+            <div class="rounded-lg border border-zinc-800 bg-zinc-900/50 p-3">
+              <svg width="100%" height="40" viewBox="0 0 400 40">
+                <line x1="20" y1="20" x2="200" y2="20" stroke="#3b82f6" stroke-width="2" />
+                <line x1="200" y1="20" x2="380" y2="20" stroke="#3f3f46" stroke-width="2" stroke-dasharray="4 4" />
+                {[20, 110, 200].map((x, i) => (
+                  <g>
+                    <circle cx={x.toString()} cy="20" r="6" fill="#09090b" stroke={i % 2 === 0 ? "#3b82f6" : "#22c55e"} stroke-width="2" />
+                    <circle cx={x.toString()} cy="20" r="2.5" fill={i % 2 === 0 ? "#60a5fa" : "#4ade80"} />
+                  </g>
+                ))}
+                {[290, 380].map((x, i) => (
+                  <g opacity="0.3">
+                    <circle cx={x.toString()} cy="20" r="6" fill="#09090b" stroke="#3f3f46" stroke-width="2" />
+                    <circle cx={x.toString()} cy="20" r="2.5" fill="#52525b" />
+                    <text x={x.toString()} y="36" text-anchor="middle" fill="#3f3f46" font-size="8" font-family="monospace">undone</text>
+                  </g>
+                ))}
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="flex gap-6 items-start">
+          <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-purple-500/10 border border-purple-500/20">
+            <span class="text-sm font-bold text-purple-400">3</span>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold mb-2">Branch from any point</h3>
+            <p class="text-sm text-zinc-400 leading-relaxed mb-3">
+              When you undo some turns and give a new instruction, the conversation forks. The undone turns are archived as a branch. You can switch between branches at any time through the branch modal — nothing is ever lost.
+            </p>
+            <div class="rounded-lg border border-zinc-800 bg-zinc-900/50 p-3">
+              <svg width="100%" height="70" viewBox="0 0 400 70">
+                {/* Main line */}
+                <line x1="20" y1="20" x2="380" y2="20" stroke="#3b82f6" stroke-width="2" />
+                {/* Branch curve */}
+                <path d="M 200 20 C 200 40, 230 50, 260 50" fill="none" stroke="#a855f7" stroke-width="2" />
+                <line x1="260" y1="50" x2="380" y2="50" stroke="#a855f7" stroke-width="2" />
+
+                {/* Main nodes */}
+                {[20, 110, 200, 290, 380].map((x, i) => (
+                  <g>
+                    <circle cx={x.toString()} cy="20" r="6" fill="#09090b" stroke="#3b82f6" stroke-width="2" />
+                    <circle cx={x.toString()} cy="20" r="2.5" fill="#60a5fa" />
+                  </g>
+                ))}
+                {/* Branch point ring */}
+                <circle cx="200" cy="20" r="12" fill="none" stroke="#a855f7" stroke-width="1.5" opacity="0.4" />
+
+                {/* Branch nodes */}
+                {[260, 335, 380].map((x) => (
+                  <g>
+                    <circle cx={x.toString()} cy="50" r="6" fill="#09090b" stroke="#a855f7" stroke-width="2" />
+                    <circle cx={x.toString()} cy="50" r="2.5" fill="#c084fc" />
+                  </g>
+                ))}
+
+                {/* Labels */}
+                <text x="20" y="10" fill="#3b82f6" font-size="9" font-family="monospace">main</text>
+                <text x="260" y="66" fill="#a855f7" font-size="9" font-family="monospace">new branch</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Use cases -->
+  <section class="border-t border-zinc-800/50">
+    <div class="mx-auto max-w-4xl px-6 py-16">
+      <h2 class="text-xl font-bold mb-8">When to branch</h2>
+      <div class="grid gap-4 sm:grid-cols-3">
+        <div class="rounded-xl border border-zinc-800 bg-zinc-900/30 p-5 transition-colors hover:border-zinc-700">
+          <div class="mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-red-500/10">
+            <svg class="h-4 w-4 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </div>
+          <h3 class="text-sm font-semibold mb-1.5">Wrong approach</h3>
+          <p class="text-xs text-zinc-400 leading-relaxed">
+            Agent chose Passport.js but you want a simpler solution. Undo those turns and try magic links instead — the OAuth approach stays archived.
+          </p>
+        </div>
+        <div class="rounded-xl border border-zinc-800 bg-zinc-900/30 p-5 transition-colors hover:border-zinc-700">
+          <div class="mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500/10">
+            <svg class="h-4 w-4 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+            </svg>
+          </div>
+          <h3 class="text-sm font-semibold mb-1.5">A/B exploration</h3>
+          <p class="text-xs text-zinc-400 leading-relaxed">
+            Try two different implementations from the same starting point. Compare the branches side-by-side and keep the one that works best.
+          </p>
+        </div>
+        <div class="rounded-xl border border-zinc-800 bg-zinc-900/30 p-5 transition-colors hover:border-zinc-700">
+          <div class="mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-green-500/10">
+            <svg class="h-4 w-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+            </svg>
+          </div>
+          <h3 class="text-sm font-semibold mb-1.5">Error recovery</h3>
+          <p class="text-xs text-zinc-400 leading-relaxed">
+            A bad edit broke the build. Instead of trying to fix it forward, rewind to the last good state and take a different path.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

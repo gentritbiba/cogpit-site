@@ -1,0 +1,30 @@
+---
+import CockpitBackground from "./CockpitBackground.astro";
+
+interface Props {
+  backLink?: boolean;
+}
+
+const { backLink = false } = Astro.props;
+---
+
+<section class="relative overflow-hidden">
+  <!-- Cockpit gear illustration -->
+  <CockpitBackground />
+
+  <!-- Dark vignette so text stays readable over gears -->
+  <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(9,9,11,0.85)_0%,rgba(9,9,11,0.4)_70%,transparent_100%)]"></div>
+
+  <!-- Content -->
+  <div class={`relative mx-auto max-w-4xl px-6 ${backLink ? "pb-12 pt-20 sm:pt-24" : "pb-20 pt-24 text-center sm:pt-32"}`}>
+    {backLink && (
+      <a href="/" class="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-300 transition-colors mb-8">
+        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
+        </svg>
+        Back to home
+      </a>
+    )}
+    <slot />
+  </div>
+</section>
