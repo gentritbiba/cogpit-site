@@ -8,6 +8,8 @@ import {
   CheckCircle,
   Copy,
   FileEdit,
+  Users,
+  Cog,
 } from "lucide-react";
 import { TOOL_STYLES, DEFAULT_TOOL_STYLE } from "../lib/toolStyles";
 
@@ -18,12 +20,25 @@ interface ToolCall {
   status: "success" | "error";
 }
 
+interface SubAgentMessage {
+  thinking?: string;
+  text?: string;
+  toolCalls?: ToolCall[];
+}
+
+interface SubAgentActivity {
+  agentId: string;
+  messageCount: number;
+  messages: SubAgentMessage[];
+}
+
 interface Turn {
   type: "user" | "assistant";
   content?: string;
   thinking?: string;
   toolCalls?: ToolCall[];
   diff?: { file: string; removed: string[]; added: string[] };
+  subAgentActivity?: SubAgentActivity;
 }
 
 const mockConversation: Turn[] = [
@@ -70,16 +85,66 @@ const mockConversation: Turn[] = [
   },
   {
     type: "assistant",
+    thinking:
+      "I need to also update the theme context to persist the dark mode preference. Let me have a sub-agent explore the existing storage patterns in the codebase.",
+    subAgentActivity: {
+      agentId: "a232fb0",
+      messageCount: 120,
+      messages: [
+        {
+          text: "I'll conduct a thorough exploration of the theme persistence and storage patterns in this project. Let me start by understanding the project structure.",
+          toolCalls: [
+            {
+              name: "Bash",
+              input: "find src/ -name '*.ts' -path '*/hooks/*'",
+              output:
+                "src/hooks/useTheme.ts\nsrc/hooks/useLocalStorage.ts\nsrc/hooks/useMediaQuery.ts",
+              status: "success",
+            },
+          ],
+        },
+        {
+          text: "Let me get a better understanding of the storage hook:",
+          toolCalls: [
+            {
+              name: "Read",
+              input: "src/hooks/useLocalStorage.ts",
+              output:
+                'export function useLocalStorage<T>(key: string, initial: T) {\n  const [value, setValue] = useState<T>(() => {\n    const stored = localStorage.getItem(key);\n    return stored ? JSON.parse(stored) : initial;\n  });\n  // ...\n}',
+              status: "success",
+            },
+          ],
+        },
+        {
+          thinking:
+            "Found the useLocalStorage hook. The useTheme hook should use this to persist the dark mode preference. Let me check if it already does.",
+          toolCalls: [
+            {
+              name: "Read",
+              input: "src/hooks/useTheme.ts",
+              output:
+                'import { useState } from "react";\n\nexport function useTheme() {\n  const [isDark, setIsDark] = useState(false);\n  const toggleTheme = () => setIsDark(!isDark);\n  return { isDark, toggleTheme };\n}',
+              status: "success",
+            },
+          ],
+        },
+      ],
+    },
+    content:
+      "The sub-agent found that `useTheme` doesn't persist preferences yet. I'll wire it up to `useLocalStorage` so the dark mode setting persists across sessions.",
+  },
+  {
+    type: "assistant",
     toolCalls: [
       {
         name: "Bash",
         input: "bun run test -- --grep 'SettingsPage'",
-        output: "✓ SettingsPage renders correctly\n✓ Dark mode toggle changes theme\n\n2 passed, 0 failed",
+        output: "✓ SettingsPage renders correctly\n✓ Dark mode toggle changes theme\n✓ Dark mode persists across sessions\n\n3 passed, 0 failed",
         status: "success",
       },
     ],
     content:
-      "Done! I've added a dark mode toggle to the settings page. The toggle uses the existing `useTheme` hook and all tests pass.",
+      "Done! I've added a dark mode toggle to the settings page with persistence. The toggle uses `useTheme` backed by `useLocalStorage` and all tests pass.",
   },
 ];
 
@@ -146,6 +211,75 @@ function ThinkingBlock({ content }: { content: string }) {
           <pre className="text-xs text-violet-300/70 whitespace-pre-wrap font-mono leading-relaxed">
             {content}
           </pre>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function SubAgentBlock({ activity }: { activity: SubAgentActivity }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="rounded-lg border border-dashed border-indigo-500/30 bg-indigo-950/10 overflow-hidden">
+      <button
+        onClick={() => setOpen(!open)}
+        className="shimmer flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-indigo-500/5 transition-colors cursor-pointer"
+      >
+        <Users className="h-3.5 w-3.5 text-indigo-400 shrink-0" />
+        <span className="text-xs font-medium text-indigo-400">
+          Sub-agent activity
+        </span>
+        <span className="inline-flex items-center gap-1 rounded border border-indigo-500/30 bg-indigo-500/15 px-1.5 py-0 h-4 text-[10px] font-mono text-indigo-300">
+          <span className="w-1.5 h-1.5 rounded-full bg-green-400" />
+          {activity.agentId}
+        </span>
+        <span className="text-[10px] text-zinc-500">
+          ({activity.messageCount} messages)
+        </span>
+        <span className="ml-auto">
+          {open ? (
+            <ChevronDown className="h-3.5 w-3.5 text-zinc-500" />
+          ) : (
+            <ChevronRight className="h-3.5 w-3.5 text-zinc-500" />
+          )}
+        </span>
+      </button>
+
+      {open && (
+        <div className="border-t border-indigo-500/15 px-3 py-3 space-y-3">
+          {activity.messages.map((msg, i) => (
+            <div key={i} className="flex gap-0">
+              <div className="w-[3px] shrink-0 rounded-full bg-indigo-400" />
+              <div className="space-y-2 pl-3 min-w-0 flex-1">
+                {msg.thinking && (
+                  <div className="flex gap-2 items-start">
+                    <Brain className="w-3.5 h-3.5 text-violet-400 mt-0.5 shrink-0" />
+                    <pre className="text-[11px] text-zinc-500 font-mono whitespace-pre-wrap break-words">
+                      {msg.thinking}
+                    </pre>
+                  </div>
+                )}
+
+                {msg.text && (
+                  <div className="flex gap-2 items-start">
+                    <Cog className="w-3.5 h-3.5 text-green-400 mt-0.5 shrink-0" />
+                    <p className="text-xs text-zinc-300 leading-relaxed">
+                      {msg.text}
+                    </p>
+                  </div>
+                )}
+
+                {msg.toolCalls && msg.toolCalls.length > 0 && (
+                  <div className="space-y-1.5">
+                    {msg.toolCalls.map((tool, j) => (
+                      <ToolCallCard key={j} tool={tool} />
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
         </div>
       )}
     </div>
@@ -234,6 +368,10 @@ export default function MockConversationTimeline() {
             {turn.toolCalls?.map((tool, j) => (
               <ToolCallCard key={j} tool={tool} defaultExpanded={j === 0 && i === 1} />
             ))}
+
+            {turn.subAgentActivity && (
+              <SubAgentBlock activity={turn.subAgentActivity} />
+            )}
 
             {turn.diff && (
               <DiffView
