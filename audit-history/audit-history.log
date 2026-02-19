@@ -1,0 +1,21 @@
+# Documentation Audit History Log
+
+## Format
+Each entry contains:
+- **ID**: Commit/change identifier
+- **Date**: Audit date (YYYY-MM-DD)
+- **Change**: Summary of the change audited
+- **Result**: Whether documentation needs updating (UPDATE REQUIRED / NO CHANGES NEEDED)
+- **Files Affected**: Which documentation files were impacted
+
+---
+
+## Audit Entries
+
+### 20260219-1588588
+- **Date:** 2026-02-19
+- **Change:** Added sub-agent activity view to MockConversationTimeline component
+- **Result:** UPDATE REQUIRED
+- **Files Affected:** `src/pages/index.astro` (1 line change needed in Conversation Timeline section description)
+- **Details:** New sub-agent activity feature should be mentioned in the main landing page description. Feature card for "Sub-Agent Tracking" already exists and is current.
+- **Reference:** `audit-history/audit-20260219-1588588.md`
