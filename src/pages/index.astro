@@ -5,6 +5,7 @@ import MockConversationTimeline from "../components/MockConversationTimeline";
 
 import MockTeamsDashboard from "../components/MockTeamsDashboard";
 import MockBranchView from "../components/MockBranchView";
+import MockNetworkAccess from "../components/MockNetworkAccess";
 import CopyButton from "../components/CopyButton";
 ---
 
@@ -237,6 +238,41 @@ import CopyButton from "../components/CopyButton";
           Interactive
         </span>
         <MockBranchView client:load />
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ NETWORK ACCESS ═══ -->
+  <section class="border-t border-zinc-800/50">
+    <div class="mx-auto max-w-5xl px-6 py-20">
+      <div class="flex flex-col items-center text-center mb-10 sm:flex-row sm:items-end sm:justify-between sm:text-left">
+        <div>
+          <div class="flex items-center gap-3 mb-3 justify-center sm:justify-start">
+            <h2 class="text-2xl font-bold tracking-tight sm:text-3xl">Network Access</h2>
+            <span class="inline-flex items-center rounded-full border border-green-500/30 bg-green-500/10 px-2.5 py-0.5 text-[11px] font-medium text-green-400">
+              New
+            </span>
+          </div>
+          <p class="mt-1 text-base text-zinc-400 max-w-lg">
+            Monitor your agents from any device — or share the URL with your team so everyone can watch the same sessions live. Send prompts from your phone with voice-to-text. One URL, multiple viewers.
+          </p>
+        </div>
+        <a
+          href="/network"
+          class="mt-4 inline-flex items-center gap-1.5 text-sm text-blue-400 hover:text-blue-300 transition-colors sm:mt-0 shrink-0"
+        >
+          Deep dive
+          <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </a>
+      </div>
+      <div class="relative rounded-2xl border border-zinc-800 bg-zinc-950/50 p-4 sm:p-6">
+        <span class="absolute -top-3 right-4 z-10 inline-flex items-center gap-1 rounded-full border border-blue-500/30 bg-blue-500/10 px-2.5 py-0.5 text-[10px] font-medium text-blue-400 backdrop-blur-sm">
+          <span class="h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse"></span>
+          Interactive
+        </span>
+        <MockNetworkAccess client:load />
       </div>
     </div>
   </section>

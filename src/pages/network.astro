@@ -1,0 +1,235 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import HeroSection from "../components/HeroSection.astro";
+import MockNetworkAccess from "../components/MockNetworkAccess";
+---
+
+<BaseLayout title="Network Access — Cogpit" description="Monitor Claude Code sessions from any device, and let your whole team watch the same sessions live. One URL, multiple viewers.">
+  <HeroSection backLink>
+    <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">Network Access</h1>
+    <p class="mt-4 max-w-2xl text-base text-zinc-400 leading-relaxed">
+      Your agents don't care where you watch them from — or how many people are watching. Enable network access and monitor sessions from your phone, your iPad, or a second machine. Share the URL with teammates and everyone sees the same live sessions simultaneously.
+    </p>
+
+    <div class="mt-6 flex flex-wrap gap-3">
+      <div class="flex items-center gap-2 rounded-lg border border-zinc-800 bg-zinc-900/50 px-3 py-2">
+        <svg class="h-4 w-4 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+        </svg>
+        <span class="text-sm text-zinc-300">Phone</span>
+      </div>
+      <div class="flex items-center gap-2 rounded-lg border border-zinc-800 bg-zinc-900/50 px-3 py-2">
+        <svg class="h-4 w-4 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+        </svg>
+        <span class="text-sm text-zinc-300">Tablet</span>
+      </div>
+      <div class="flex items-center gap-2 rounded-lg border border-zinc-800 bg-zinc-900/50 px-3 py-2">
+        <svg class="h-4 w-4 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+        </svg>
+        <span class="text-sm text-zinc-300">Another computer</span>
+      </div>
+      <div class="flex items-center gap-2 rounded-lg border border-green-500/30 bg-green-500/5 px-3 py-2">
+        <svg class="h-4 w-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+        </svg>
+        <span class="text-sm text-green-300">Teammates</span>
+      </div>
+      <div class="flex items-center gap-2 rounded-lg border border-amber-500/30 bg-amber-500/5 px-3 py-2">
+        <svg class="h-4 w-4 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
+        </svg>
+        <span class="text-sm text-amber-300">Voice to text</span>
+      </div>
+    </div>
+  </HeroSection>
+
+  <!-- Interactive Demo -->
+  <section class="border-t border-zinc-800/50">
+    <div class="mx-auto max-w-5xl px-6 py-16">
+      <div class="mb-8">
+        <h2 class="text-xl font-bold">Try it yourself</h2>
+        <p class="mt-2 text-sm text-zinc-400">
+          Walk through the setup flow — toggle network access on the left, set a password, then use the <strong class="text-green-400">same password</strong> to sign in from the phone mockup on the right.
+        </p>
+      </div>
+      <div class="rounded-2xl border border-zinc-800 bg-zinc-950/50 p-4 sm:p-6">
+        <MockNetworkAccess client:load />
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="border-t border-zinc-800/50">
+    <div class="mx-auto max-w-4xl px-6 py-16">
+      <h2 class="text-xl font-bold mb-10">How it works</h2>
+
+      <div class="space-y-12">
+        <!-- Step 1 -->
+        <div class="flex gap-6 items-start">
+          <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-green-500/10 border border-green-500/20">
+            <span class="text-sm font-bold text-green-400">1</span>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold mb-2">Enable in settings</h3>
+            <p class="text-sm text-zinc-400 leading-relaxed">
+              Open Cogpit's settings and flip the <strong class="text-zinc-300">Network Access</strong> toggle.
+              Set a password (minimum 12 characters) and save. Cogpit restarts its embedded server to bind on
+              <code class="text-xs bg-zinc-800 px-1.5 py-0.5 rounded">0.0.0.0:19384</code> instead of localhost.
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="flex gap-6 items-start">
+          <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-500/10 border border-blue-500/20">
+            <span class="text-sm font-bold text-blue-400">2</span>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold mb-2">Share the connection URL</h3>
+            <p class="text-sm text-zinc-400 leading-relaxed">
+              The header bar shows your LAN IP and port — something like
+              <code class="text-xs bg-zinc-800 px-1.5 py-0.5 rounded">http://192.168.1.100:19384</code>.
+              Open it on your own devices or send it to teammates on the same network. Everyone signs in with the same password and sees <strong class="text-zinc-300">the same live sessions</strong> simultaneously.
+            </p>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="flex gap-6 items-start">
+          <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-purple-500/10 border border-purple-500/20">
+            <span class="text-sm font-bold text-purple-400">3</span>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold mb-2">Sign in and collaborate</h3>
+            <p class="text-sm text-zinc-400 leading-relaxed">
+              Enter the password on the login screen — each viewer gets a session token valid for 24 hours.
+              The full Cogpit dashboard loads with <strong class="text-zinc-300">live SSE streaming</strong>, tool call inspection, branching, and everything else. Multiple people can watch and interact with the same agent sessions at the same time.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Collaboration -->
+  <section class="border-t border-zinc-800/50">
+    <div class="mx-auto max-w-4xl px-6 py-16">
+      <div class="flex gap-6 items-start">
+        <div class="hidden sm:flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-green-500/10 border border-green-500/20">
+          <svg class="h-5 w-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+          </svg>
+        </div>
+        <div>
+          <h2 class="text-xl font-bold mb-3">Not just multi-device — multi-person</h2>
+          <p class="text-sm text-zinc-400 leading-relaxed max-w-2xl">
+            Most monitoring tools are single-viewer. Cogpit's network access is designed for <strong class="text-zinc-300">multiple simultaneous connections</strong>. Everyone who signs in sees the same live sessions with the same SSE streams, the same tool calls, the same diffs — in real time.
+          </p>
+          <p class="text-sm text-zinc-400 leading-relaxed max-w-2xl mt-3">
+            This turns Claude Code into a <strong class="text-zinc-300">collaborative experience</strong>. A senior dev reviews the agent's output from their machine while a junior dev guides the session from theirs. A team lead checks in on long-running agent tasks from their phone during a meeting. No screen sharing, no Zoom calls — just a URL and a password.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Security -->
+  <section class="border-t border-zinc-800/50">
+    <div class="mx-auto max-w-4xl px-6 py-16">
+      <h2 class="text-xl font-bold mb-8">Security first</h2>
+      <p class="text-sm text-zinc-400 mb-8 max-w-2xl leading-relaxed">
+        Exposing a web server on your LAN is a responsibility. Cogpit treats it seriously with multiple layers of protection.
+      </p>
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div class="rounded-xl border border-zinc-800 bg-zinc-900/30 p-5 transition-colors hover:border-zinc-700">
+          <div class="mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-green-500/10">
+            <svg class="h-4 w-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+            </svg>
+          </div>
+          <h3 class="text-sm font-semibold mb-1.5">Password authentication</h3>
+          <p class="text-xs text-zinc-400 leading-relaxed">
+            Every remote connection requires a password. Local requests (127.0.0.1) bypass auth for zero-friction desktop use.
+          </p>
+        </div>
+        <div class="rounded-xl border border-zinc-800 bg-zinc-900/30 p-5 transition-colors hover:border-zinc-700">
+          <div class="mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500/10">
+            <svg class="h-4 w-4 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <h3 class="text-sm font-semibold mb-1.5">Rate limiting</h3>
+          <p class="text-xs text-zinc-400 leading-relaxed">
+            5 login attempts per minute per IP. Brute-force attacks are stopped before they start — with timing-safe password comparison.
+          </p>
+        </div>
+        <div class="rounded-xl border border-zinc-800 bg-zinc-900/30 p-5 transition-colors hover:border-zinc-700">
+          <div class="mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500/10">
+            <svg class="h-4 w-4 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
+            </svg>
+          </div>
+          <h3 class="text-sm font-semibold mb-1.5">Session tokens</h3>
+          <p class="text-xs text-zinc-400 leading-relaxed">
+            Passwords are hashed with salted SHA-256. After login, you get a session token (24h TTL) — the raw password is never stored or transmitted again.
+          </p>
+        </div>
+        <div class="rounded-xl border border-zinc-800 bg-zinc-900/30 p-5 transition-colors hover:border-zinc-700">
+          <div class="mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-red-500/10">
+            <svg class="h-4 w-4 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+            </svg>
+          </div>
+          <h3 class="text-sm font-semibold mb-1.5">Restricted operations</h3>
+          <p class="text-xs text-zinc-400 leading-relaxed">
+            Dangerous endpoints (kill-process, undo, kill-port) are scoped to tracked PIDs, home directory paths, and unprivileged ports only. Security headers and body size limits are enforced on all requests.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Use cases -->
+  <section class="border-t border-zinc-800/50">
+    <div class="mx-auto max-w-4xl px-6 py-16">
+      <h2 class="text-xl font-bold mb-8">Use cases</h2>
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div class="rounded-xl border border-green-500/20 bg-green-500/5 p-5 transition-colors hover:border-green-500/30 sm:col-span-2">
+          <div class="mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-green-500/10">
+            <svg class="h-4 w-4 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+            </svg>
+          </div>
+          <h3 class="text-sm font-semibold mb-1.5">Team collaboration on Claude Code</h3>
+          <p class="text-xs text-zinc-400 leading-relaxed">
+            Multiple people connect to the same Cogpit instance and see every session in real time. Your teammate reviews the agent's edits from their laptop while you guide it from yours. Pair programming with AI becomes a team sport — no screen sharing required.
+          </p>
+        </div>
+        <div class="rounded-xl border border-zinc-800 bg-zinc-900/30 p-5 transition-colors hover:border-zinc-700">
+          <div class="mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-blue-500/10">
+            <svg class="h-4 w-4 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+            </svg>
+          </div>
+          <h3 class="text-sm font-semibold mb-1.5">Monitor from your phone</h3>
+          <p class="text-xs text-zinc-400 leading-relaxed">
+            Kick off a long agent task, then grab your phone and watch it work from the couch. Full dashboard with live streaming, right in your pocket. Use your phone's <strong class="text-zinc-300">voice-to-text</strong> to dictate prompts instead of typing.
+          </p>
+        </div>
+        <div class="rounded-xl border border-zinc-800 bg-zinc-900/30 p-5 transition-colors hover:border-zinc-700">
+          <div class="mb-2 flex h-8 w-8 items-center justify-center rounded-lg bg-purple-500/10">
+            <svg class="h-4 w-4 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+            </svg>
+          </div>
+          <h3 class="text-sm font-semibold mb-1.5">Multi-machine setup</h3>
+          <p class="text-xs text-zinc-400 leading-relaxed">
+            Run agents on your desktop and monitor from your laptop in the same room. No tunnels, no cloud — just your local network.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
