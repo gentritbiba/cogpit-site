@@ -12,6 +12,14 @@ Each entry contains:
 
 ## Audit Entries
 
+### 20260301-refactor
+- **Date:** 2026-03-01
+- **Change:** Removed BranchGraph SVG component and added mobile responsiveness improvements
+- **Result:** NO CHANGES NEEDED
+- **Files Affected:** None (internal refactor with no documentation impact)
+- **Details:** Removed left-side timeline dots SVG and related constants from MockBranchView.tsx. Added responsive padding to turn cards (p-3 sm:p-4) and responsive gap sizing in branching.astro (gap-4 sm:gap-6). No documentation updates required as BranchGraph was an internal implementation detail.
+- **Reference:** `audit-history/audit-20260301-refactor.md`
+
 ### 20260219-1588588
 - **Date:** 2026-02-19
 - **Change:** Added sub-agent activity view to MockConversationTimeline component

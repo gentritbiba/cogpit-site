@@ -40,12 +40,6 @@ const BRANCH_POINT_IDX = 3;
 const BRANCH_COLORS = ["#3b82f6", "#a855f7", "#f59e0b"];
 const BRANCH_INNER = ["#60a5fa", "#c084fc", "#fbbf24"];
 
-const NODE_SPACING = 88;
-const GRAPH_WIDTH = 80;
-const NODE_R = 6;
-const MAIN_X = 28;
-const BRANCH_X = 58;
-
 // ─── Data ─────────────────────────────────────────────────────
 
 const sharedTurns: Turn[] = [
@@ -140,122 +134,6 @@ const allBranches: BranchData[] = [
   },
 ];
 
-// ─── Branch Graph (left side) ─────────────────────────────────
-
-function BranchGraph({
-  totalTurns,
-  undoneFrom,
-  activeBranchIdx,
-  branchTurnCount,
-}: {
-  totalTurns: number;
-  undoneFrom: number;
-  activeBranchIdx: number;
-  branchTurnCount: number;
-}) {
-  const showCurve = activeBranchIdx > 0;
-  const branchColor = BRANCH_COLORS[activeBranchIdx - 1] || BRANCH_COLORS[0];
-  const branchInner = BRANCH_INNER[activeBranchIdx - 1] || BRANCH_INNER[0];
-  const nodesOnMain = showCurve ? BRANCH_POINT_IDX + 1 : totalTurns;
-  const maxIdx = showCurve ? BRANCH_POINT_IDX + branchTurnCount : totalTurns - 1;
-  const height = (maxIdx + 1) * NODE_SPACING + 20;
-
-  return (
-    <svg width={GRAPH_WIDTH} height={height} className="shrink-0" style={{ minHeight: height }}>
-      <defs>
-        <linearGradient id="main-grad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#3b82f6" />
-          <stop offset="100%" stopColor="#22c55e" />
-        </linearGradient>
-        <linearGradient id="undone-grad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#3f3f46" />
-          <stop offset="100%" stopColor="#27272a" />
-        </linearGradient>
-      </defs>
-
-      {/* Main line (branch 0 / no curve) */}
-      {!showCurve && (
-        <>
-          <line
-            x1={MAIN_X} y1={NODE_SPACING / 2}
-            x2={MAIN_X} y2={(undoneFrom >= 0 ? undoneFrom : totalTurns - 1) * NODE_SPACING + NODE_SPACING / 2}
-            stroke="url(#main-grad)" strokeWidth={2} className="transition-all duration-500"
-          />
-          {undoneFrom >= 0 && (
-            <line
-              x1={MAIN_X} y1={undoneFrom * NODE_SPACING + NODE_SPACING / 2}
-              x2={MAIN_X} y2={(totalTurns - 1) * NODE_SPACING + NODE_SPACING / 2}
-              stroke="url(#undone-grad)" strokeWidth={2} strokeDasharray="4 4"
-              className="transition-all duration-500"
-            />
-          )}
-        </>
-      )}
-
-      {/* Shared trunk (branches 1,2) */}
-      {showCurve && nodesOnMain > 1 && (
-        <line
-          x1={MAIN_X} y1={NODE_SPACING / 2}
-          x2={MAIN_X} y2={BRANCH_POINT_IDX * NODE_SPACING + NODE_SPACING / 2}
-          stroke="url(#main-grad)" strokeWidth={2}
-        />
-      )}
-
-      {/* Branch curve + nodes */}
-      {showCurve && (
-        <g className="animate-branch-appear">
-          <path
-            d={`M ${MAIN_X} ${BRANCH_POINT_IDX * NODE_SPACING + NODE_SPACING / 2} C ${MAIN_X} ${BRANCH_POINT_IDX * NODE_SPACING + NODE_SPACING}, ${BRANCH_X} ${BRANCH_POINT_IDX * NODE_SPACING + NODE_SPACING * 0.5}, ${BRANCH_X} ${(BRANCH_POINT_IDX + 1) * NODE_SPACING + NODE_SPACING / 2}`}
-            fill="none" stroke={branchColor} strokeWidth={2}
-          />
-          {branchTurnCount > 1 && (
-            <line
-              x1={BRANCH_X} y1={(BRANCH_POINT_IDX + 1) * NODE_SPACING + NODE_SPACING / 2}
-              x2={BRANCH_X} y2={(BRANCH_POINT_IDX + branchTurnCount) * NODE_SPACING + NODE_SPACING / 2}
-              stroke={branchColor} strokeWidth={2}
-            />
-          )}
-          {Array.from({ length: branchTurnCount }).map((_, i) => {
-            const y = (BRANCH_POINT_IDX + 1 + i) * NODE_SPACING + NODE_SPACING / 2;
-            return (
-              <g key={`branch-${i}`} style={{ animationDelay: `${(i + 1) * 150}ms` }} className="animate-node-pop">
-                <circle cx={BRANCH_X} cy={y} r={NODE_R + 4} fill={branchColor} opacity={0.15} />
-                <circle cx={BRANCH_X} cy={y} r={NODE_R} fill="#18181b" stroke={branchColor} strokeWidth={2} />
-                <circle cx={BRANCH_X} cy={y} r={2.5} fill={branchInner} />
-              </g>
-            );
-          })}
-        </g>
-      )}
-
-      {/* Branch point ring */}
-      {showCurve && (
-        <circle
-          cx={MAIN_X} cy={BRANCH_POINT_IDX * NODE_SPACING + NODE_SPACING / 2}
-          r={NODE_R + 8} fill="none" stroke={branchColor} strokeWidth={1.5} opacity={0.4}
-          className="animate-pulse-ring"
-        />
-      )}
-
-      {/* Main/shared nodes */}
-      {Array.from({ length: nodesOnMain }).map((_, i) => {
-        const y = i * NODE_SPACING + NODE_SPACING / 2;
-        const isUndone = !showCurve && undoneFrom >= 0 && i >= undoneFrom;
-        const isUser = i % 2 === 0;
-        const nodeColor = isUndone ? "#3f3f46" : isUser ? "#3b82f6" : "#22c55e";
-        const innerColor = isUndone ? "#27272a" : isUser ? "#60a5fa" : "#4ade80";
-        return (
-          <g key={`main-${i}`} className="transition-all duration-500" style={{ opacity: isUndone ? 0.35 : 1 }}>
-            {!isUndone && <circle cx={MAIN_X} cy={y} r={NODE_R + 4} fill={nodeColor} opacity={0.15} />}
-            <circle cx={MAIN_X} cy={y} r={NODE_R} fill="#18181b" stroke={nodeColor} strokeWidth={2} />
-            <circle cx={MAIN_X} cy={y} r={2.5} fill={innerColor} />
-          </g>
-        );
-      })}
-    </svg>
-  );
-}
-
 // ─── Mini Branch Graph (modal) ────────────────────────────────
 
 // Unified display list: current + archived
@@ -265,7 +143,6 @@ interface DisplayBranch {
   name: string;
   date: string;
   turns: Turn[];
-  graphNodeCount: number;
   sourceIdx: number; // index into allBranches (-1 for current)
 }
 
@@ -276,7 +153,6 @@ const DISPLAY_BRANCHES: DisplayBranch[] = [
     name: "Current branch",
     date: "",
     turns: sharedTurns,
-    graphNodeCount: 4,
     sourceIdx: -1,
   },
   ...allBranches.map((b, i) => ({
@@ -285,7 +161,6 @@ const DISPLAY_BRANCHES: DisplayBranch[] = [
     name: b.name,
     date: b.date,
     turns: b.turns,
-    graphNodeCount: b.turns.length,
     sourceIdx: i,
   })),
 ];
@@ -394,12 +269,12 @@ function TurnCard({
 }) {
   return (
     <div
-      className={`rounded-xl border p-4 transition-all duration-500 ease-out overflow-hidden ${
+      className={`rounded-xl border p-3 sm:p-4 transition-all duration-500 ease-out overflow-hidden ${
         isUndone
           ? "border-zinc-800/20 bg-zinc-900/5 opacity-30 scale-[0.98] translate-x-1"
           : "border-zinc-800/60 bg-zinc-900/40"
       }`}
-      style={{ minHeight: NODE_SPACING - 8, animationDelay: `${index * 50}ms` }}
+      style={{ animationDelay: `${index * 50}ms` }}
     >
       <div className="flex items-start gap-3 h-full">
         <div className="flex flex-col items-center gap-1 shrink-0 mt-0.5">
@@ -414,7 +289,7 @@ function TurnCard({
           )}
         </div>
         <div className="flex-1 min-w-0 overflow-hidden">
-          <div className="flex items-center gap-2 mb-1">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-1">
             <span className={`text-xs font-medium transition-colors duration-500 ${isUndone ? "text-zinc-600" : turn.type === "user" ? "text-blue-400" : "text-green-400"}`}>
               {turn.type === "user" ? "You" : "Claude"}
             </span>
@@ -496,25 +371,17 @@ export default function MockBranchView() {
         </button>
       </div>
 
-      {/* Timeline with graph */}
-      <div className="flex gap-0">
-        <BranchGraph
-          totalTurns={turns.length}
-          undoneFrom={-1}
-          activeBranchIdx={activeBranchIdx !== null ? activeBranchIdx + 1 : 0}
-          branchTurnCount={branch ? branch.turns.length : 0}
-        />
-        <div className="flex-1 min-w-0 space-y-1">
-          {turns.map((turn, i) => (
-            <TurnCard
-              key={`${activeBranchIdx ?? "current"}-${turn.id}-${i}`}
-              turn={turn}
-              index={i}
-              isUndone={false}
-              isBranchPoint={false}
-            />
-          ))}
-        </div>
+      {/* Timeline */}
+      <div className="space-y-1">
+        {turns.map((turn, i) => (
+          <TurnCard
+            key={`${activeBranchIdx ?? "current"}-${turn.id}-${i}`}
+            turn={turn}
+            index={i}
+            isUndone={false}
+            isBranchPoint={false}
+          />
+        ))}
       </div>
 
       {/* ─── Branch Modal ─── */}
@@ -522,7 +389,7 @@ export default function MockBranchView() {
         <div className="fixed inset-0 z-50 flex items-start justify-center p-4 pt-[10%] animate-modal-backdrop" onClick={() => setShowModal(false)}>
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
           <div
-            className="relative w-full max-w-lg max-h-[80vh] flex flex-col rounded-2xl border border-zinc-700 bg-zinc-900 p-6 shadow-2xl animate-modal-content"
+            className="relative w-full max-w-lg max-h-[80vh] flex flex-col rounded-2xl border border-zinc-700 bg-zinc-900 p-4 sm:p-6 shadow-2xl animate-modal-content"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
