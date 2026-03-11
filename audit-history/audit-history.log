@@ -27,3 +27,11 @@ Each entry contains:
 - **Files Affected:** `src/pages/index.astro` (1 line change needed in Conversation Timeline section description)
 - **Details:** New sub-agent activity feature should be mentioned in the main landing page description. Feature card for "Sub-Agent Tracking" already exists and is current.
 - **Reference:** `audit-history/audit-20260219-1588588.md`
+
+### 20260311-PENDING
+- **Date:** 2026-03-11
+- **Change:** Major UI redesign — color system migration to OKLCH, hero section redesign, layout overhaul, interactive screenshot component, and 6 new asset files
+- **Result:** NO CHANGES NEEDED
+- **Files Affected:** None (marketing site only, README is intentionally generic boilerplate)
+- **Details:** Complete visual redesign including color system modernization (hex → OKLCH), hero section with 3D perspective transforms, new navigation/footer, redesigned landing page with feature grid, and interactive components. All changes are UI/visual with no impact on documentation, features, or API contracts.
+- **Reference:** `audit-history/audit-20260311-PENDING.md`
