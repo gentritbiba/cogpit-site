@@ -7,7 +7,7 @@ import MockBranchView from "../components/MockBranchView";
 import MockNetworkAccess from "../components/MockNetworkAccess";
 import CopyButton from "../components/CopyButton";
 import HeroScreenshot from "../components/HeroScreenshot";
-import { COGPIT_VERSION } from "../config";
+import VersionTag from "../components/VersionTag";
 ---
 
 <BaseLayout>
@@ -19,7 +19,7 @@ import { COGPIT_VERSION } from "../config";
         <div class="fade-up">
           <div class="inline-flex items-center gap-2 rounded-full border border-blue-500/20 bg-blue-500/5 px-3.5 py-1.5 text-[12px] font-medium text-blue-400/80 mb-8 readout">
             <span class="h-1.5 w-1.5 rounded-full bg-blue-400 pulse-live"></span>
-            v{COGPIT_VERSION} — Desktop App + Network Access
+            <VersionTag client:load suffix="— Desktop App + Network Access" />
           </div>
         </div>
 

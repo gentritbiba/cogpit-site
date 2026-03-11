@@ -1,5 +1,5 @@
 ---
-import { COGPIT_VERSION } from "../config";
+import VersionTag from "../components/VersionTag";
 
 interface Props {
   title?: string;
@@ -102,7 +102,7 @@ const {
         </div>
         <div class="mt-12 pt-6 border-t border-white/[0.04] flex flex-col sm:flex-row items-center justify-between gap-3 text-[12px] text-zinc-700">
           <span>&copy; {new Date().getFullYear()} Gentrit Biba</span>
-          <span class="readout">v{COGPIT_VERSION}</span>
+          <VersionTag client:load className="readout" />
         </div>
       </div>
     </footer>
