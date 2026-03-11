@@ -20,6 +20,14 @@ export default function HeroScreenshot() {
     const frame = frameRef.current;
     if (!container || !frame) return;
 
+    // Respect prefers-reduced-motion: show static final state
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) {
+      frame.style.transform = "perspective(1200px) scale(1)";
+      frame.style.opacity = "1";
+      return;
+    }
+
     const handleMouseMove = (e: MouseEvent) => {
       const rect = container.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;

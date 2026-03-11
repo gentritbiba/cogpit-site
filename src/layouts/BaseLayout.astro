@@ -1,4 +1,6 @@
 ---
+import { COGPIT_VERSION } from "../config";
+
 interface Props {
   title?: string;
   description?: string;
@@ -28,7 +30,7 @@ const {
       <div class="mx-auto flex h-14 max-w-7xl items-center justify-between px-6">
         <a href="/" class="group flex items-center gap-2.5">
           <img src="/cogpit.svg" alt="Cogpit" class="h-7 w-7" />
-          <span class="text-lg font-semibold tracking-tight" style="font-family: Inter, sans-serif; letter-spacing: -0.02em;">Cogpit</span>
+          <span class="text-lg font-semibold tracking-display">Cogpit</span>
         </a>
         <div class="hidden items-center gap-7 text-[13px] text-zinc-500 md:flex">
           <a href="/#features" class="transition-colors hover:text-blue-400">Features</a>
@@ -71,7 +73,7 @@ const {
           <div class="flex flex-col gap-3">
             <div class="flex items-center gap-2.5">
               <img src="/cogpit.svg" alt="Cogpit" class="h-6 w-6" />
-              <span class="text-base font-semibold" style="font-family: Inter, sans-serif; letter-spacing: -0.02em;">Cogpit</span>
+              <span class="text-base font-semibold tracking-display">Cogpit</span>
             </div>
             <p class="text-sm text-zinc-600 max-w-xs">
               Open-source control center for Claude Code agent sessions.
@@ -100,7 +102,7 @@ const {
         </div>
         <div class="mt-12 pt-6 border-t border-white/[0.04] flex flex-col sm:flex-row items-center justify-between gap-3 text-[12px] text-zinc-700">
           <span>&copy; {new Date().getFullYear()} Gentrit Biba</span>
-          <span class="readout">v0.3.1</span>
+          <span class="readout">v{COGPIT_VERSION}</span>
         </div>
       </div>
     </footer>

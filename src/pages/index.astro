@@ -7,6 +7,7 @@ import MockBranchView from "../components/MockBranchView";
 import MockNetworkAccess from "../components/MockNetworkAccess";
 import CopyButton from "../components/CopyButton";
 import HeroScreenshot from "../components/HeroScreenshot";
+import { COGPIT_VERSION } from "../config";
 ---
 
 <BaseLayout>
@@ -18,7 +19,7 @@ import HeroScreenshot from "../components/HeroScreenshot";
         <div class="fade-up">
           <div class="inline-flex items-center gap-2 rounded-full border border-blue-500/20 bg-blue-500/5 px-3.5 py-1.5 text-[12px] font-medium text-blue-400/80 mb-8 readout">
             <span class="h-1.5 w-1.5 rounded-full bg-blue-400 pulse-live"></span>
-            v0.3.1 — Desktop App + Network Access
+            v{COGPIT_VERSION} — Desktop App + Network Access
           </div>
         </div>
 
@@ -75,7 +76,7 @@ import HeroScreenshot from "../components/HeroScreenshot";
   <section class="section-divide">
     <div class="mx-auto max-w-7xl px-6 py-24">
       <div class="mx-auto max-w-2xl text-center mb-16">
-        <h2 class="text-3xl font-bold tracking-tight sm:text-4xl" style="letter-spacing: -0.02em;">
+        <h2 class="text-3xl font-bold tracking-display sm:text-4xl">
           Three modes of operation
         </h2>
         <p class="mt-4 text-base text-zinc-500 leading-relaxed">
@@ -94,7 +95,7 @@ import HeroScreenshot from "../components/HeroScreenshot";
                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
               </svg>
             </div>
-            <h3 class="text-xl font-semibold" style="letter-spacing: -0.02em;">Observe</h3>
+            <h3 class="text-xl font-semibold tracking-display">Observe</h3>
           </div>
           <p class="text-sm text-zinc-500 leading-relaxed mb-6">
             Watch agent sessions stream in real-time. Every tool call, file edit, thinking block, and sub-agent spawned — rendered as it happens.
@@ -115,7 +116,7 @@ import HeroScreenshot from "../components/HeroScreenshot";
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
               </svg>
             </div>
-            <h3 class="text-xl font-semibold" style="letter-spacing: -0.02em;">Understand</h3>
+            <h3 class="text-xl font-semibold tracking-display">Understand</h3>
           </div>
           <p class="text-sm text-zinc-500 leading-relaxed mb-6">
             Per-turn token costs, API rate limits, context window usage, and cache efficiency — all at a glance.
@@ -137,7 +138,7 @@ import HeroScreenshot from "../components/HeroScreenshot";
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
               </svg>
             </div>
-            <h3 class="text-xl font-semibold" style="letter-spacing: -0.02em;">Control</h3>
+            <h3 class="text-xl font-semibold tracking-display">Control</h3>
           </div>
           <p class="text-sm text-zinc-500 leading-relaxed mb-6">
             Send messages with voice or text, undo turns, branch conversations, manage permissions and MCP servers, and orchestrate multi-agent teams.
@@ -157,7 +158,7 @@ import HeroScreenshot from "../components/HeroScreenshot";
     <div class="mx-auto max-w-4xl px-6 py-24">
       <div class="text-center mb-12">
         <span class="tag bg-cyan-500/5 text-cyan-400/70 border border-cyan-500/10 mb-4">Core Feature</span>
-        <h2 class="text-3xl font-bold tracking-tight sm:text-4xl" style="letter-spacing: -0.02em;">
+        <h2 class="text-3xl font-bold tracking-display sm:text-4xl">
           Conversation Timeline
         </h2>
         <p class="mt-4 text-base text-zinc-500 max-w-lg mx-auto">
@@ -182,7 +183,7 @@ import HeroScreenshot from "../components/HeroScreenshot";
   <section id="features" class="section-divide">
     <div class="mx-auto max-w-7xl px-6 py-24">
       <div class="text-center mb-14">
-        <h2 class="text-3xl font-bold tracking-tight sm:text-4xl" style="letter-spacing: -0.02em;">
+        <h2 class="text-3xl font-bold tracking-display sm:text-4xl">
           Everything at your fingertips
         </h2>
         <p class="mt-4 text-base text-zinc-500">
@@ -320,7 +321,7 @@ import HeroScreenshot from "../components/HeroScreenshot";
       <div class="flex flex-col items-center text-center mb-12 sm:flex-row sm:items-end sm:justify-between sm:text-left">
         <div>
           <span class="tag bg-emerald-500/5 text-emerald-400/70 border border-emerald-500/10 mb-4">Multi-Agent</span>
-          <h2 class="text-3xl font-bold tracking-tight sm:text-4xl" style="letter-spacing: -0.02em;">Agent Teams</h2>
+          <h2 class="text-3xl font-bold tracking-display sm:text-4xl">Agent Teams</h2>
           <p class="mt-3 text-base text-zinc-500 max-w-lg">
             Monitor multi-agent teams collaborating on complex tasks. Members, task boards, and real-time messaging.
           </p>
@@ -351,7 +352,7 @@ import HeroScreenshot from "../components/HeroScreenshot";
       <div class="flex flex-col items-center text-center mb-12 sm:flex-row sm:items-end sm:justify-between sm:text-left">
         <div>
           <span class="tag bg-purple-500/5 text-purple-400/70 border border-purple-500/10 mb-4">Undo / Redo</span>
-          <h2 class="text-3xl font-bold tracking-tight sm:text-4xl" style="letter-spacing: -0.02em;">Conversation Branching</h2>
+          <h2 class="text-3xl font-bold tracking-display sm:text-4xl">Conversation Branching</h2>
           <p class="mt-3 text-base text-zinc-500 max-w-lg">
             Rewind agent actions and explore alternative approaches. Full file operation reversal included.
           </p>
@@ -384,7 +385,7 @@ import HeroScreenshot from "../components/HeroScreenshot";
           <div class="flex items-center gap-3 mb-3 justify-center sm:justify-start">
             <span class="tag bg-cyan-500/5 text-cyan-400/70 border border-cyan-500/10">LAN Access</span>
           </div>
-          <h2 class="text-3xl font-bold tracking-tight sm:text-4xl" style="letter-spacing: -0.02em;">Network Access</h2>
+          <h2 class="text-3xl font-bold tracking-display sm:text-4xl">Network Access</h2>
           <p class="mt-3 text-base text-zinc-500 max-w-lg">
             Monitor your agents from any device. Share the URL with your team so everyone can watch the same sessions live. Send prompts from your phone.
           </p>
@@ -413,7 +414,7 @@ import HeroScreenshot from "../components/HeroScreenshot";
   <section id="get-started" class="section-divide">
     <div class="mx-auto max-w-3xl px-6 py-24">
       <div class="text-center mb-14">
-        <h2 class="text-3xl font-bold tracking-tight sm:text-4xl" style="letter-spacing: -0.02em;">
+        <h2 class="text-3xl font-bold tracking-display sm:text-4xl">
           Get started in seconds
         </h2>
         <p class="mt-4 text-base text-zinc-500">
@@ -430,7 +431,7 @@ import HeroScreenshot from "../components/HeroScreenshot";
             </svg>
           </div>
           <div>
-            <h3 class="text-base font-semibold" style="letter-spacing: -0.02em;">Desktop App</h3>
+            <h3 class="text-base font-semibold tracking-display">Desktop App</h3>
             <p class="text-[12px] text-zinc-600">Recommended — zero setup</p>
           </div>
         </div>
@@ -481,7 +482,7 @@ import HeroScreenshot from "../components/HeroScreenshot";
             </svg>
           </div>
           <div>
-            <h3 class="text-base font-semibold" style="letter-spacing: -0.02em;">From Source</h3>
+            <h3 class="text-base font-semibold tracking-display">From Source</h3>
             <p class="text-[12px] text-zinc-600">Requires Bun + Claude Code</p>
           </div>
         </div>
@@ -492,7 +493,7 @@ import HeroScreenshot from "../components/HeroScreenshot";
             <div class="h-2.5 w-2.5 rounded-full bg-zinc-700"></div>
             <span class="ml-2 text-[11px] text-zinc-700 readout">terminal</span>
           </div>
-          <div class="p-5 text-sm leading-loose" style="font-family: 'JetBrains Mono', monospace;">
+          <div class="p-5 text-sm leading-loose readout">
             <div><span class="text-blue-400/60">$</span> <span class="text-zinc-400">git clone https://github.com/gentritbiba/cogpit</span></div>
             <div><span class="text-blue-400/60">$</span> <span class="text-zinc-400">cd cogpit</span></div>
             <div><span class="text-blue-400/60">$</span> <span class="text-zinc-400">bun install</span></div>

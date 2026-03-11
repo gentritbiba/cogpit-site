@@ -256,6 +256,11 @@
   letter-spacing: 0.05em;
 }
 
+/* ─── Display tracking (tight letter-spacing for headings) ─── */
+.tracking-display {
+  letter-spacing: -0.02em;
+}
+
 /* ─── Reduced motion ─── */
 @media (prefers-reduced-motion: reduce) {
   .fade-up,
